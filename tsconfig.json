@@ -5,6 +5,7 @@
     "rootDirs": ["."],
     "moduleResolution": "node",
     "module": "commonjs",
+    "skipLibCheck": true,
     "strict": true,
     "declaration": true,
     "importHelpers": true,
@@ -23,7 +24,7 @@
     "baseUrl": "." // required for "paths"
   },
   "include": [
-    "*.ts", "ressources/import-data.ts", "backend/index.ts"
+    "*.ts", "src/**/*.ts", "utils/**/*.ts"
   ],
   "exclude": [
     "node_modules"
