@@ -1,5 +1,7 @@
 'use strict'
 
+import * as fs from 'fs'
+import * as path from 'path'
 import { createConnection, Connection } from 'typeorm'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
@@ -31,6 +33,19 @@ export default class Database {
   }
 
   async connect(): Promise<Connection> {
+    if (config.database === 'sqlite') {
+      const sqliteFile = config.sqlite.file
+      const parentDir = path.dirname(sqliteFile)
+
+      if (!fs.existsSync(parentDir)) {
+        fs.mkdirSync(parentDir, { recursive: true })
+      }
+
+      if (fs.existsSync(sqliteFile) && fs.statSync(sqliteFile).isDirectory()) {
+        fs.rmSync(sqliteFile, { recursive: true, force: true })
+      }
+    }
+
     this.connection = await createConnection({
       ...this.config,
       entities: [

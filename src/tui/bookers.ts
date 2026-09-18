@@ -53,8 +53,8 @@ async function deleteBooker(bookers: BookerEntity[]): Promise<void> {
   const picked = await pickFromList('Quel compte supprimer ?', bookers, b => `${b.name} (${b.type})`)
   if (picked === BACK) return
 
-  const attachedTravels = await TravelEntity.find({ booker: { id: picked.id } })
-  const attachedCrons = await CronTravelEntity.find({ booker: { id: picked.id } })
+  const attachedTravels = await TravelEntity.find({ where: { booker: { id: picked.id } } })
+  const attachedCrons = await CronTravelEntity.find({ where: { booker: { id: picked.id } } })
   if (attachedTravels.length > 0 || attachedCrons.length > 0) {
     error(`Impossible de supprimer "${picked.name}" : il est utilisé par ${attachedTravels.length} alerte(s) et ${attachedCrons.length} alerte(s) récurrente(s). Supprimez-les d'abord.`)
     return

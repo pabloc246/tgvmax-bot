@@ -3,7 +3,7 @@ import { NotifierInterface, Credentials } from './interface'
 import TravelEntity from '../entities/travel.entity'
 import CronEntity from '../entities/cronTravel.entity'
 import { getDate } from '../utils/date'
-import NotifierEntity from '../entities/notifier.entity'
+import NotifierEntity, { Type as NotifierType } from '../entities/notifier.entity'
 
 import { TrainlineStation } from '../book/trainline'
 const trainlineStations: TrainlineStation[] = require('../../trainline_stations.json')
@@ -36,7 +36,7 @@ export class TelegramNotifier implements NotifierInterface {
     }
     this.bot.start(async (ctx) => {
       const chatId = ctx.chat.id
-      const notifier = await NotifierEntity.findOne({ where: { type: 'telegram', username: chatId } })
+      const notifier = await NotifierEntity.findOne({ where: { type: NotifierType.telegram, username: String(chatId) } })
       if (!notifier) {
         await ctx.reply(`Hi! Your chat id is ${chatId} that you can use in the notifier username configuration. Try again: /start`)
         return

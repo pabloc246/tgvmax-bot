@@ -100,7 +100,7 @@ export default class CronTravelEntity extends BaseEntity {
     // @ts-ignore
     const res = await this.insert(args)
     const id = res.generatedMaps[0].id
-    const cron = await this.findOneOrFail({ id }, { relations: ['notifier', 'booker'] })
+    const cron = await this.findOneOrFail({ where: { id }, relations: ['notifier', 'booker'] })
     await cron.run()
     return cron
   }
@@ -108,15 +108,15 @@ export default class CronTravelEntity extends BaseEntity {
   static async deleteById(id: string | number): Promise<void> {
     if (typeof id === 'string') id = parseInt(id)
 
-    const travels = await TravelEntity.find({ cron: { id } })
+    const travels = await TravelEntity.find({ where: { cron: { id } } })
     await Promise.all(travels.map(travel => travel.delete()))
 
-    const cron = await CronTravelEntity.findOneOrFail({ id })
+    const cron = await CronTravelEntity.findOneOrFail({ where: { id } })
     await cron.remove()
   }
 
   static async reloadCronTravel(id: number) {
-    const cron = await CronTravelEntity.findOneOrFail({ id }, { relations: ['notifier', 'booker'] })
+    const cron = await CronTravelEntity.findOneOrFail({ where: { id }, relations: ['notifier', 'booker'] })
     await cron.run()
   }
 

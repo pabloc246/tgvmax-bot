@@ -72,7 +72,7 @@ export default class TravelEntity extends BaseEntity {
   static async insertAndCrawl(args: QueryDeepPartialEntity<TravelEntity>): Promise<TravelEntity> {
     const res = await this.insert(args)
     const id = res.generatedMaps[0].id
-    const travel = await this.findOne({ id }, { relations: ['notifier', 'booker', 'cron'] })
+    const travel = await this.findOne({ where: { id }, relations: ['notifier', 'booker', 'cron'] })
     travel!.init()
     return travel!
   }

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-const parse = require('csv-parse/lib/sync')
+const { parse } = require('csv-parse/sync')
 import { writeFileSync } from 'fs'
 import { TrainlineStation } from '../src/book/trainline'
 
@@ -9,7 +9,13 @@ const main = async () => {
   const lines = parse(await res.text(), {
     columns: true,
     delimiter: ';'
-  })
+  }) as Array<{
+    id: string
+    is_suggestable: string
+    sncf_is_enabled: string
+    sncf_id: string
+    name: string
+  }>
   for (const line of lines.filter(line => line.is_suggestable === 't' && line.sncf_is_enabled === 't' && line.sncf_id !== '')) {
     stations.push({
       trainlineId: line.id,

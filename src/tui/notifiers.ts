@@ -58,8 +58,8 @@ async function deleteNotifier(notifiers: NotifierEntity[]): Promise<void> {
   const picked = await pickFromList('Quelle notification supprimer ?', notifiers, n => `${n.name} (${n.type})`)
   if (picked === BACK) return
 
-  const attachedTravels = await TravelEntity.find({ notifier: { id: picked.id } })
-  const attachedCrons = await CronTravelEntity.find({ notifier: { id: picked.id } })
+  const attachedTravels = await TravelEntity.find({ where: { notifier: { id: picked.id } } })
+  const attachedCrons = await CronTravelEntity.find({ where: { notifier: { id: picked.id } } })
   if (attachedTravels.length > 0 || attachedCrons.length > 0) {
     error(`Impossible de supprimer "${picked.name}" : elle est utilisée par ${attachedTravels.length} alerte(s) et ${attachedCrons.length} alerte(s) récurrente(s). Supprimez-les d'abord.`)
     return
