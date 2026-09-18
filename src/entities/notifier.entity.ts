@@ -4,7 +4,7 @@ import SmsNotifier from '../notify/sms'
 import { TelegramNotifier } from '../notify/telegram'
 import TravelEntity from './travel.entity'
 
-enum Type {
+export enum Type {
   sms = 'sms',
   telegram = 'telegram',
 }
