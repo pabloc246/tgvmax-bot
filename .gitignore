@@ -13,4 +13,5 @@ trainline_stations.json
 *.suo
 *.ntvs*
 *.njsproj
+*.sqlite
 *.sln
